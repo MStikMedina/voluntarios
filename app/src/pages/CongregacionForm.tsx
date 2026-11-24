@@ -3,7 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/db'
 import Pagina from '../components/Pagina'
-import { Campo, Tarjeta, claseInput } from '../components/Campos'
+import { Aviso, Campo, Tarjeta, claseInput } from '../components/Campos'
 import TelefonoAcciones from '../components/TelefonoAcciones'
 import Dialogo, { claseBotonPeligro, claseBotonPrimario, claseBotonSecundario } from '../components/Dialogo'
 import {
@@ -129,7 +129,7 @@ export default function CongregacionForm() {
             error={visibles.nombre}
             autoFocus={nueva}
           />
-          {dup.nombre && <Aviso texto={`Ya existe una congregación llamada «${dup.nombre.nombre}».`} />}
+          {dup.nombre && <Aviso>Ya existe una congregación llamada «{dup.nombre.nombre}».</Aviso>}
           <Campo
             etiqueta="Número"
             inputMode="numeric"
@@ -137,7 +137,7 @@ export default function CongregacionForm() {
             onChange={(e) => cambiar('numero', e.target.value)}
             error={visibles.numero}
           />
-          {dup.numero && <Aviso texto={`El número ${dup.numero.numero} ya es de «${dup.numero.nombre}».`} />}
+          {dup.numero && <Aviso>El número {dup.numero.numero} ya es de «{dup.numero.nombre}».</Aviso>}
         </Tarjeta>
 
         <Tarjeta titulo="Coordinador del cuerpo de ancianos">
@@ -256,13 +256,5 @@ export default function CongregacionForm() {
         {otras.find((c) => c.id === Number(destino))?.nombre}».
       </Dialogo>
     </Pagina>
-  )
-}
-
-function Aviso({ texto }: { texto: string }) {
-  return (
-    <p className="-mt-1 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
-      ⚠ {texto} Puede guardar de todos modos.
-    </p>
   )
 }

@@ -37,3 +37,13 @@ export function Campo({
     </label>
   )
 }
+
+/** Aviso amarillo que no bloquea (p. ej. posibles duplicados). */
+export function Aviso({ children, final = 'Puede guardar de todos modos.' }: { children: ReactNode; final?: string }) {
+  return (
+    <p className="-mt-1 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-900/40 dark:text-amber-200">
+      ⚠ {children}
+      {final && ` ${final}`}
+    </p>
+  )
+}
