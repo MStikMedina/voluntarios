@@ -54,3 +54,29 @@ export const IconoFlecha = ({ className }: P) => (
     <path d="m9 5 7 7-7 7" />
   </svg>
 )
+
+export const IconoTelefono = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="M5 3.5h3.2l1.6 4-2.1 1.3a11 11 0 0 0 5.5 5.5l1.3-2.1 4 1.6V17a2 2 0 0 1-2 2A15.5 15.5 0 0 1 3 5.5a2 2 0 0 1 2-2z" />
+  </svg>
+)
+
+// Globo de chat con auricular (genérico, sin logotipo de marca).
+export const IconoWhatsapp = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3.2 3.2z" />
+    <path d="M9 8.5c0 3.3 2.2 5.9 5.5 6.5l1-1.6-1.8-.9-.9.9a4.5 4.5 0 0 1-2.2-2.2l.9-.9-.9-1.8z" strokeWidth={1.5} />
+  </svg>
+)
+
+export const IconoMasSimbolo = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+)
+
+export const IconoBasura = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
+  </svg>
+)

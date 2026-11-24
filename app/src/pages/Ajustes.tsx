@@ -11,6 +11,7 @@ import {
 import { NOMBRES_DIA, formatoHora } from '../lib/fechas'
 import { formatoCelular } from '../lib/telefono'
 import { horasDeJornada } from '../lib/horas'
+import TelefonoAcciones from '../components/TelefonoAcciones'
 
 const formatoHoras = (h: number) => `${h.toLocaleString('es-CO', { maximumFractionDigits: 2 })} h`
 
@@ -173,6 +174,7 @@ export default function Ajustes() {
             error={visibles.superintendenteCelular}
             ayuda="+57 · 10 dígitos"
           />
+          {!errores.superintendenteCelular && <TelefonoAcciones numero={form.superintendenteCelular} compacto />}
         </Tarjeta>
 
         <Tarjeta titulo="Días de trabajo">
