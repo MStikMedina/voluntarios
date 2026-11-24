@@ -36,9 +36,9 @@ export function variablesMensaje(o: {
   return {
     nombre: primerNombre(o.voluntario.nombre),
     proyecto: nombreProyecto(o.proyecto),
-    fecha: o.fecha ? fechaLarga(o.fecha) : '(fecha)',
-    jornada: o.jornada ? NOMBRE_JORNADA[o.jornada].toLowerCase() : '(jornada)',
-    hora: o.jornada ? horarioTexto(o.proyecto, o.jornada) : '(hora)',
+    fecha: o.fecha ? fechaLarga(o.fecha) : '…',
+    jornada: o.jornada ? NOMBRE_JORNADA[o.jornada].toLowerCase() : '…',
+    hora: o.jornada ? horarioTexto(o.proyecto, o.jornada) : '…',
     tarea: o.tarea?.nombre ?? 'por asignar',
   }
 }

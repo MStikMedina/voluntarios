@@ -14,7 +14,10 @@ export default function Mas() {
               to={`/mas/${s.ruta}`}
               className="flex items-center justify-between px-4 py-4 active:bg-slate-100 dark:active:bg-slate-800"
             >
-              <span className="font-medium">{s.titulo}</span>
+              <span>
+                <span className="block font-medium">{s.titulo}</span>
+                <span className="block text-sm text-slate-500 dark:text-slate-400">{s.detalle}</span>
+              </span>
               <IconoFlecha className="h-5 w-5 text-slate-400" />
             </Link>
           </li>

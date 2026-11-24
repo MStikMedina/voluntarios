@@ -1,26 +1,29 @@
+import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout'
 import Inicio from './pages/Inicio'
-import Voluntarios from './pages/Voluntarios'
-import Programacion from './pages/Programacion'
-import Asistencia from './pages/Asistencia'
-import Mas from './pages/Mas'
-import EnConstruccion from './pages/EnConstruccion'
-import Ajustes from './pages/Ajustes'
-import Congregaciones from './pages/Congregaciones'
-import CongregacionForm from './pages/CongregacionForm'
-import VoluntarioForm from './pages/VoluntarioForm'
-import VoluntarioFicha from './pages/VoluntarioFicha'
-import Emergencia from './pages/Emergencia'
-import Respaldo from './pages/Respaldo'
-import CargaMasiva from './pages/CargaMasiva'
-import Tareas from './pages/Tareas'
-import TareaForm from './pages/TareaForm'
-import Mensajes from './pages/Mensajes'
-import PlantillaForm from './pages/PlantillaForm'
-import EnvioGuiado from './pages/EnvioGuiado'
-import ProgramacionHoja from './pages/ProgramacionHoja'
-import Exportar from './pages/Exportar'
+
+// Cada pantalla se carga cuando se abre (la app arranca más rápido). Todas quedan guardadas
+// para usarse sin internet (el service worker las precachea).
+const Voluntarios = lazy(() => import('./pages/Voluntarios'))
+const VoluntarioForm = lazy(() => import('./pages/VoluntarioForm'))
+const VoluntarioFicha = lazy(() => import('./pages/VoluntarioFicha'))
+const Emergencia = lazy(() => import('./pages/Emergencia'))
+const Programacion = lazy(() => import('./pages/Programacion'))
+const EnvioGuiado = lazy(() => import('./pages/EnvioGuiado'))
+const ProgramacionHoja = lazy(() => import('./pages/ProgramacionHoja'))
+const Asistencia = lazy(() => import('./pages/Asistencia'))
+const Mas = lazy(() => import('./pages/Mas'))
+const Ajustes = lazy(() => import('./pages/Ajustes'))
+const Congregaciones = lazy(() => import('./pages/Congregaciones'))
+const CongregacionForm = lazy(() => import('./pages/CongregacionForm'))
+const Respaldo = lazy(() => import('./pages/Respaldo'))
+const CargaMasiva = lazy(() => import('./pages/CargaMasiva'))
+const Tareas = lazy(() => import('./pages/Tareas'))
+const TareaForm = lazy(() => import('./pages/TareaForm'))
+const Mensajes = lazy(() => import('./pages/Mensajes'))
+const PlantillaForm = lazy(() => import('./pages/PlantillaForm'))
+const Exportar = lazy(() => import('./pages/Exportar'))
 
 export default function App() {
   return (
@@ -47,7 +50,6 @@ export default function App() {
         <Route path="mas/mensajes" element={<Mensajes />} />
         <Route path="mas/mensajes/:id" element={<PlantillaForm />} />
         <Route path="mas/exportar" element={<Exportar />} />
-        <Route path="mas/:seccion" element={<EnConstruccion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

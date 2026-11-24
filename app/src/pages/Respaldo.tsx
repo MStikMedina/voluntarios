@@ -7,7 +7,7 @@ import Dialogo, { claseBotonPeligro, claseBotonPrimario, claseBotonSecundario } 
 import { fechaHora as fechaHoraISO } from '../lib/fechas'
 import { entregarArchivo, puedeCompartirArchivos } from '../lib/descargas'
 import {
-  cambiosSinRespaldar, contar, contarBase, crearRespaldo, leerRespaldo, NOMBRES_TABLA, nombreArchivoRespaldo,
+  borrarDatos, cambiosSinRespaldar, contar, contarBase, crearRespaldo, leerRespaldo, NOMBRES_TABLA, nombreArchivoRespaldo,
   respaldoABlob, restaurarRespaldo, TABLAS, type ModoRestaurar, type Respaldo as TipoRespaldo,
 } from '../lib/respaldo'
 
@@ -17,6 +17,7 @@ export default function Respaldo() {
   const [ocupado, setOcupado] = useState(false)
   const [archivo, setArchivo] = useState<{ nombre: string; respaldo: TipoRespaldo } | null>(null)
   const [confirmar, setConfirmar] = useState<ModoRestaurar | null>(null)
+  const [borrar, setBorrar] = useState(false)
   const entrada = useRef<HTMLInputElement>(null)
   const compartible = puedeCompartirArchivos()
 
@@ -194,6 +195,30 @@ export default function Respaldo() {
         )}
       </Tarjeta>
 
+      <Tarjeta titulo="Empezar de cero">
+        <p className="text-sm text-slate-600 dark:text-slate-300">
+          Úselo al terminar la fase de pruebas, antes de cargar los datos reales. Borra congregaciones, voluntarios,
+          tareas, cupos, programación y asistencia. <strong>Haga un respaldo antes</strong> si quiere conservar algo.
+        </p>
+        <button type="button" onClick={() => setBorrar(true)} className={`w-full ${claseBotonPeligro}`}>
+          Borrar los datos…
+        </button>
+      </Tarjeta>
+
+      {borrar && (
+        <DialogoBorrar
+          onCerrar={() => setBorrar(false)}
+          onHecho={(todo) => {
+            setBorrar(false)
+            setMensaje({
+              tipo: 'ok',
+              texto: todo ? 'Listo: la app quedó como nueva.' : 'Listo: se borraron los datos (se conservaron Ajustes y plantillas).',
+            })
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+        />
+      )}
+
       <Dialogo
         abierto={confirmar !== null}
         titulo={confirmar === 'reemplazar' ? '¿Reemplazar todos los datos?' : '¿Combinar los datos?'}
@@ -226,5 +251,54 @@ export default function Respaldo() {
         )}
       </Dialogo>
     </Pagina>
+  )
+}
+
+function DialogoBorrar({ onCerrar, onHecho }: { onCerrar: () => void; onHecho: (todo: boolean) => void }) {
+  const [texto, setTexto] = useState('')
+  const [todo, setTodo] = useState(false)
+  const listo = texto.trim().toUpperCase() === 'BORRAR'
+  return (
+    <Dialogo
+      abierto
+      titulo="¿Borrar los datos?"
+      onCerrar={onCerrar}
+      acciones={
+        <>
+          <button type="button" onClick={onCerrar} className={claseBotonSecundario}>
+            Cancelar
+          </button>
+          <button
+            type="button"
+            disabled={!listo}
+            onClick={async () => {
+              await borrarDatos(db, todo)
+              onHecho(todo)
+            }}
+            className={claseBotonPeligro}
+          >
+            Borrar
+          </button>
+        </>
+      }
+    >
+      <p className="mb-3 text-sm">
+        Se borrarán definitivamente las congregaciones, voluntarios, tareas, cupos, programación y asistencia de este
+        equipo. No se puede deshacer.
+      </p>
+      <label className="mb-3 flex items-center gap-2 text-sm">
+        <input type="checkbox" checked={todo} onChange={(e) => setTodo(e.target.checked)} className="h-4 w-4 accent-red-600" />
+        Borrar también Ajustes y plantillas (dejar la app como nueva)
+      </label>
+      <label className="block text-sm">
+        Escriba <strong>BORRAR</strong> para confirmar:
+        <input
+          value={texto}
+          onChange={(e) => setTexto(e.target.value)}
+          autoCapitalize="characters"
+          className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-950"
+        />
+      </label>
+    </Dialogo>
   )
 }

@@ -1,6 +1,6 @@
 // Respaldo y restauración (PLAN.md §2.13): un archivo JSON con todas las tablas.
 import type { BaseVoluntarios } from '../db/db'
-import { PROYECTO_POR_DEFECTO } from '../db/db'
+import { PLANTILLAS_INICIALES, PROYECTO_POR_DEFECTO } from '../db/db'
 import type {
   Asistencia, Congregacion, Dia, Plantilla, Programacion, Proyecto, Tarea, Voluntario,
 } from '../db/tipos'
@@ -181,4 +181,23 @@ export function respaldoPendiente(
 export function cambiosSinRespaldar(p: Pick<Proyecto, 'ultimoCambio' | 'ultimoRespaldo'>): boolean {
   if (!p.ultimoCambio) return false
   return !p.ultimoRespaldo || p.ultimoCambio > p.ultimoRespaldo
+}
+
+/**
+ * Empezar de cero (p. ej. tras la fase de pruebas): borra congregaciones, voluntarios, tareas,
+ * cupos, programación y asistencia. Con `todo`, también vuelve Ajustes y plantillas a los iniciales.
+ */
+export async function borrarDatos(db: BaseVoluntarios, todo = false): Promise<void> {
+  await db.transaction('rw', [db.proyecto, ...TABLAS.map((t) => db[t])], async () => {
+    for (const t of TABLAS) {
+      if (t === 'plantillas' && !todo) continue
+      await db[t].clear()
+    }
+    if (todo) {
+      await db.plantillas.bulkAdd(PLANTILLAS_INICIALES.map((p) => ({ ...p })) as never)
+      const actual = await db.obtenerProyecto()
+      await db.proyecto.put({ ...PROYECTO_POR_DEFECTO, id: 1, ultimoRespaldo: actual.ultimoRespaldo })
+    }
+  })
+  await db.ultimaMarca
 }

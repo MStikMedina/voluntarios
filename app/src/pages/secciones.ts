@@ -1,10 +1,10 @@
-// Secciones del menú "Más" y la fase del PLAN en que se construye cada una.
+// Secciones del menú "Más".
 export const seccionesMas = [
-  { ruta: 'congregaciones', titulo: 'Congregaciones', fase: 4 },
-  { ruta: 'tareas', titulo: 'Tareas', fase: 9 },
-  { ruta: 'mensajes', titulo: 'Mensajes', fase: 11 },
-  { ruta: 'exportar', titulo: 'Exportar', fase: 15 },
-  { ruta: 'carga-masiva', titulo: 'Carga masiva', fase: 8 },
-  { ruta: 'respaldo', titulo: 'Respaldo', fase: 7 },
-  { ruta: 'ajustes', titulo: 'Ajustes', fase: 3 },
+  { ruta: 'congregaciones', titulo: 'Congregaciones', detalle: 'Congregaciones y sus contactos' },
+  { ruta: 'tareas', titulo: 'Tareas', detalle: 'Frentes de trabajo y personas necesarias' },
+  { ruta: 'mensajes', titulo: 'Mensajes', detalle: 'Plantillas y envío guiado por WhatsApp' },
+  { ruta: 'exportar', titulo: 'Exportar', detalle: 'Informes en Excel' },
+  { ruta: 'carga-masiva', titulo: 'Carga masiva', detalle: 'Importar voluntarios desde Excel o texto' },
+  { ruta: 'respaldo', titulo: 'Respaldo', detalle: 'Guardar, restaurar o empezar de cero' },
+  { ruta: 'ajustes', titulo: 'Ajustes', detalle: 'Proyecto, días, horarios y edades' },
 ]

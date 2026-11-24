@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto'
 import { BaseVoluntarios } from '../db/db'
 import { guardarVoluntario } from './voluntarios'
 import {
-  contarBase, crearRespaldo, leerRespaldo, nombreArchivoRespaldo, respaldoPendiente, restaurarRespaldo,
+  borrarDatos, contarBase, crearRespaldo, leerRespaldo, nombreArchivoRespaldo, respaldoPendiente, restaurarRespaldo,
   RespaldoInvalido,
 } from './respaldo'
 import type { NuevoVoluntario } from '../db/tipos'
@@ -102,5 +102,30 @@ describe('respaldo', () => {
     expect(respaldoPendiente({ frecuenciaRespaldo: 'semanal', ultimoCambio: hoyMas, ultimoRespaldo: ayer }, ahora)).toBe(false)
     const hace8 = new Date(2026, 10, 15, 9, 0).toISOString()
     expect(respaldoPendiente({ frecuenciaRespaldo: 'semanal', ultimoCambio: hoyMas, ultimoRespaldo: hace8 }, ahora)).toBe(true)
+  })
+})
+
+describe('empezar de cero', () => {
+  it('borra los datos y conserva Ajustes y plantillas', async () => {
+    const db = nuevaBase()
+    await llenar(db)
+    await db.plantillas.update(1, { texto: 'mía' })
+    await borrarDatos(db)
+    const c = await contarBase(db)
+    expect({ ...c, plantillas: 0 }).toEqual({ congregaciones: 0, voluntarios: 0, tareas: 0, dias: 0, programaciones: 0, asistencias: 0, plantillas: 0 })
+    expect(c.plantillas).toBe(4)
+    expect((await db.plantillas.get(1))?.texto).toBe('mía')
+    expect((await db.obtenerProyecto()).nombre).toBe('Remodelación')
+  })
+
+  it('con «todo» también reinicia Ajustes y plantillas', async () => {
+    const db = nuevaBase()
+    await llenar(db)
+    await db.plantillas.update(1, { texto: 'mía' })
+    await borrarDatos(db, true)
+    expect((await db.obtenerProyecto()).nombre).toBe('')
+    const pl = await db.plantillas.toArray()
+    expect(pl).toHaveLength(4)
+    expect(pl.some((p) => p.texto === 'mía')).toBe(false)
   })
 })
