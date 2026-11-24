@@ -20,6 +20,7 @@ import Mensajes from './pages/Mensajes'
 import PlantillaForm from './pages/PlantillaForm'
 import EnvioGuiado from './pages/EnvioGuiado'
 import ProgramacionHoja from './pages/ProgramacionHoja'
+import Exportar from './pages/Exportar'
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="mas/tareas/:id" element={<TareaForm />} />
         <Route path="mas/mensajes" element={<Mensajes />} />
         <Route path="mas/mensajes/:id" element={<PlantillaForm />} />
+        <Route path="mas/exportar" element={<Exportar />} />
         <Route path="mas/:seccion" element={<EnConstruccion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

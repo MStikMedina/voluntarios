@@ -16,6 +16,10 @@ import {
 import { ORDEN_SEMANA } from '../lib/disponibilidad'
 import { NOMBRES_DIA } from '../lib/fechas'
 import { normalizar } from '../lib/texto'
+import type { Voluntario } from '../db/tipos'
+import { libroABlob } from '../lib/excel'
+import { filasListado, nombreArchivoExport } from '../lib/exportar'
+import { entregarArchivo } from '../lib/descargas'
 
 // Lista alfabética con búsqueda (nombre y profesión) y filtros combinables (PLAN.md §2.6).
 // Los filtros viven en la URL: se conservan al abrir una ficha y volver.
@@ -28,6 +32,18 @@ export default function Voluntarios() {
     setParams((prev) => filtrosAParams({ ...filtrosDeParams(prev), ...c }), { replace: true })
   const nActivos = filtrosActivos(filtros)
   const [panel, setPanel] = useState(false)
+  const [exportando, setExportando] = useState(false)
+
+  async function exportarLista(lista: Voluntario[]) {
+    setExportando(true)
+    try {
+      const [congregaciones, tareas] = await Promise.all([db.congregaciones.toArray(), db.tareas.toArray()])
+      const blob = await libroABlob([{ nombre: 'Voluntarios', filas: filasListado(lista, congregaciones, tareas) }])
+      await entregarArchivo(blob, nombreArchivoExport(nActivos || filtros.texto ? 'filtrados' : 'listado'), { compartir: false })
+    } finally {
+      setExportando(false)
+    }
+  }
 
   const datos = useLiveQuery(async () => {
     const [voluntarios, congregaciones, proyecto] = await Promise.all([
@@ -159,13 +175,24 @@ export default function Voluntarios() {
         </div>
       ) : (
         <>
-          <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
-            {visibles.length === datos.lista.length
-              ? datos.lista.length === 1
-                ? '1 voluntario'
-                : `${datos.lista.length} voluntarios`
-              : `${visibles.length} de ${datos.lista.length} voluntarios`}
-          </p>
+          <div className="mb-2 flex items-center justify-between gap-2">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              {visibles.length === datos.lista.length
+                ? datos.lista.length === 1
+                  ? '1 voluntario'
+                  : `${datos.lista.length} voluntarios`
+                : `${visibles.length} de ${datos.lista.length} voluntarios`}
+            </p>
+            <button
+              type="button"
+              disabled={exportando}
+              onClick={() => exportarLista(visibles)}
+              title="Exportar a Excel los voluntarios de esta lista (con la búsqueda y los filtros puestos)"
+              className="rounded-lg border border-slate-300 px-3 py-1 text-sm font-medium active:bg-slate-100 disabled:opacity-40 dark:border-slate-700 dark:active:bg-slate-800"
+            >
+              {exportando ? '…' : '⬇ Excel'}
+            </button>
+          </div>
           <ul className="space-y-2">
             {visibles.map((v) => (
               <li key={v.id} className="flex items-center gap-2 rounded-xl bg-white pr-3 shadow-sm dark:bg-slate-900">
