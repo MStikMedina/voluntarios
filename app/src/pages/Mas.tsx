@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import Pagina from '../components/Pagina'
 import { IconoFlecha } from '../components/Iconos'
 import { seccionesMas } from './secciones'
+import EstadoDatos from '../components/EstadoDatos'
 
 export default function Mas() {
   return (
@@ -19,6 +20,7 @@ export default function Mas() {
           </li>
         ))}
       </ul>
+      <EstadoDatos />
       <p className="mt-6 text-center text-xs text-slate-400">Voluntarios · versión {__VERSION__}</p>
     </Pagina>
   )

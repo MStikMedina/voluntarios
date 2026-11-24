@@ -189,7 +189,8 @@ En "Más" están Congregaciones, Tareas, Mensajes, Exportar, Carga masiva, Respa
 proyecto (registro único, id = 1): nombre, ciudad, direccion, fechaInicio, fechaFin,
   superintendenteNombre, superintendenteCelular, diasTrabajo: number[] (0=dom..6=sáb),
   jornadas: { M: {inicio:'07:00', fin:'12:00'}, T: {inicio:'13:00', fin:'17:00'} },
-  edadMenor: 18, edadMayor: 65, ultimoRespaldo?: string, ultimoCambio?: string
+  edadMenor: 18, edadMayor: 65, frecuenciaRespaldo: 'diario',
+  ultimoRespaldo?: string, ultimoCambio?: string
 
 congregaciones: ++id, nombre, numero, coordinadorNombre, coordinadorCelular,
   otroContactoNombre, otroContactoCelular
@@ -197,7 +198,7 @@ congregaciones: ++id, nombre, numero, coordinadorNombre, coordinadorCelular,
 voluntarios: ++id, nombre, nombreNorm*, congregacionId*, invitado, invitadoMotivo, invitadoPor,
   tipo: 'Local'|'A-2', fechaNacimiento ('YYYY-MM-DD'), profesion, profesionNorm,
   celulares: {numero:string, principal:boolean}[], emergenciaNombre, emergenciaCelular,
-  disponibilidad: {0..6: 'M'|'T'|'D'|null}, tareaHabitualId?, observaciones, creado, actualizado
+  disponibilidad: ('M'|'T'|'D'|null)[7] (índice 0=dom..6=sáb), tareaHabitualId?, observaciones, creado, actualizado
 
 tareas: ++id, nombre, descripcion, fechaInicio, fechaFin, estado, personasNecesarias,
   habilidadRequerida
@@ -246,7 +247,7 @@ guardan en minúsculas, sin tildes y sin espacios repetidos. Cada vez que se esc
     workflow de GitHub Actions para Pages.
   - ✅ Aceptación: la URL de Pages abre en el celular, **se instala** con ícono y abre sin internet.
 
-- [ ] **Fase 2 — Capa de datos y utilidades**
+- [x] **Fase 2 — Capa de datos y utilidades**
   - Schema Dexie (§4), tipos TS, `storage.persist()`, utilidades de §5 (menos WhatsApp), Vitest
     con pruebas de normalizar, edad, fechas, disponibilidad y horas.
   - ✅ Aceptación: pruebas en verde y datos de prueba que siguen ahí al recargar.
@@ -332,3 +333,4 @@ guardan en minúsculas, sin tildes y sin espacios repetidos. Cada vez que se esc
 |---|---|---|
 | 23/11/2026 | 0 | Planificación completa. 104 preguntas. Decisiones en §2. |
 | 23/11/2026 | 1 (parcial) | Node v26.13.1 portable en `%LOCALAPPDATA%\Programs\nodejs` y GitHub CLI en `%LOCALAPPDATA%\Programs\gh\bin` (sin winget; ambos agregados al PATH del usuario, abrir una terminal nueva). App en `app/`: Vite 8 + React 19 + TS, Tailwind 4 (`@tailwindcss/vite`, colores `primario-*` en `index.css`), React Router 7 con HashRouter, vite-plugin-pwa 2 (`registerType: 'prompt'`, aviso "Recargar" en `AvisoActualizacion`). Íconos generados desde `public/icono.svg` con `npm run iconos`. Layout con barra inferior de 5 secciones y menú "Más" (`pages/secciones.ts`) con páginas "llega en la Fase N". `BASE` de Vite se pasa por variable de entorno (el workflow usa el nombre del repo). **Vitest**: por la tilde de "Construcción" en la ruta, `import … from 'vitest'` falla; se usa `globals: true` en `vitest.config.ts` y las pruebas NO importan de vitest. `.gitignore` en la raíz excluye `*.json` (salvo los de config de `app/`), `*.xlsx`, `*.xls`, `*.csv` y `*.pdf`. Build, test y lint en verde; revisado en claro y oscuro. Repo público **MStikMedina/voluntarios**, Pages con build por Actions, publicado en **https://mstikmedina.github.io/voluntarios/** (workflow en verde). Git local con autor noreply (`137585725+MStikMedina@users.noreply.github.com`). El usuario confirmó en el celular: se instala, abre sin internet y sigue el tema. **Fase 1 completa.** |
+| 23/11/2026 | 2 | Dexie 4 + dexie-react-hooks; `fake-indexeddb` (dev) para probar la BD en Vitest. **`db/`**: `tipos.ts` (modelo §4), `db.ts` (clase `BaseVoluntarios`, instancia `db`, schema v1, `populate` crea el proyecto por defecto y las 4 plantillas iniciales de §2.5), `persistencia.ts` (`storage.persist()`, se llama en `main.tsx`), `datosPrueba.ts`. **Middleware DBCore** en `db.ts`: en toda escritura de voluntarios calcula `nombreNorm`/`profesionNorm` (no hay que hacerlo a mano) y en cualquier tabla salvo `proyecto` marca `proyecto.ultimoCambio` (con `setTimeout`, fuera de la transacción; no cuenta la creación de la base). El proyecto se lee con `db.obtenerProyecto()` y se guarda con `db.guardarProyecto(cambios)` (marca `ultimoCambio`, salvo si solo cambia `ultimoRespaldo`). Decisiones: `disponibilidad` es un **arreglo de 7** (índice 0 = domingo) con `'M'|'T'|'D'|null`; al leer códigos, M + T del mismo día = D; campo nuevo `proyecto.frecuenciaRespaldo: 'diario'`; días de trabajo por defecto = sábado; celular válido = 10 dígitos que empiezan por 3 (se acepta y quita el +57). **`lib/`**: `texto.ts`, `fechas.ts` (fechas `'YYYY-MM-DD'` en hora local, edad, alertas, 12 h), `telefono.ts`, `disponibilidad.ts`, `horas.ts`, `plantillas.ts`. WhatsApp queda para la Fase 4. Tarjeta **"Datos en este dispositivo"** al final de "Más" (conteos, último cambio, estado de protección y botones Crear/Borrar datos de prueba en la congregación "(Prueba)"). 19 pruebas en verde; probado en Chrome headless por DevTools Protocol: crear datos → recargar → siguen ahí → borrar, en claro y oscuro. En Chrome de escritorio sin instalar, la protección sale "sin protección permanente" (normal; en la PWA instalada debería quedar protegida). **Pendiente:** que el usuario lo pruebe en el celular. **Fase 2 completa.** |
