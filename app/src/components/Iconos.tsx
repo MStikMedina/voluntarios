@@ -80,3 +80,30 @@ export const IconoBasura = ({ className }: P) => (
     <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" />
   </svg>
 )
+
+export const IconoBuscar = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <circle cx="11" cy="11" r="6.5" />
+    <path d="m20 20-4.4-4.4" />
+  </svg>
+)
+
+export const IconoFiltro = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="M4 6h16M7 12h10M10 18h4" />
+  </svg>
+)
+
+export const IconoCerrar = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <path d="M6 6l12 12M18 6 6 18" />
+  </svg>
+)
+
+// Cruz de primeros auxilios.
+export const IconoEmergencia = ({ className }: P) => (
+  <svg {...base} className={className}>
+    <rect x="3" y="3" width="18" height="18" rx="4" />
+    <path d="M12 7.5v9M7.5 12h9" />
+  </svg>
+)

@@ -12,6 +12,7 @@ import { IconoBasura, IconoMasSimbolo } from '../components/Iconos'
 import { ordenarCongregaciones } from '../lib/congregaciones'
 import { formatoCelular, validarCelular } from '../lib/telefono'
 import { hoyISO } from '../lib/fechas'
+import { rutaListaVoluntarios } from '../lib/filtros'
 import {
   asegurarPrincipal, duplicadosVoluntario, formAVoluntario, formVoluntarioVacio, guardarVoluntario,
   hayDuplicados, hayErrores, validarVoluntario, voluntarioAForm, type DuplicadosVoluntario, type FormVoluntario,
@@ -22,7 +23,7 @@ export default function VoluntarioForm() {
   const nuevo = idTexto === undefined
   const id = nuevo ? undefined : Number(idTexto)
   const navegar = useNavigate()
-  const volver = nuevo ? { to: '/voluntarios', texto: 'Voluntarios' } : { to: `/voluntarios/${id}`, texto: 'Ficha' }
+  const volver = nuevo ? { to: rutaListaVoluntarios(), texto: 'Voluntarios' } : { to: `/voluntarios/${id}`, texto: 'Ficha' }
 
   const datos = useLiveQuery(async () => {
     const [proyecto, congregaciones, todos, actual] = await Promise.all([

@@ -10,8 +10,9 @@ import SelectorDisponibilidad from '../components/SelectorDisponibilidad'
 import Edad from '../components/Edad'
 import { formatoFecha } from '../lib/fechas'
 import { eliminarVoluntario } from '../lib/voluntarios'
+import { rutaListaVoluntarios } from '../lib/filtros'
 
-const VOLVER = { to: '/voluntarios', texto: 'Voluntarios' }
+const volverLista = () => ({ to: rutaListaVoluntarios(), texto: 'Voluntarios' })
 
 export default function VoluntarioFicha() {
   const { id: idTexto } = useParams()
@@ -31,15 +32,15 @@ export default function VoluntarioFicha() {
     return { v, proyecto, congregacion, tarea }
   }, [id])
 
-  if (!Number.isInteger(id) || datos === null) return <Navigate to={VOLVER.to} replace />
+  if (!Number.isInteger(id) || datos === null) return <Navigate to="/voluntarios" replace />
   if (!datos) {
     return (
-      <Pagina titulo="Voluntario" volver={VOLVER}>
+      <Pagina titulo="Voluntario" volver={volverLista()}>
         <p className="text-slate-500">Cargando…</p>
       </Pagina>
     )
   }
-  if (!datos.v) return <Navigate to={VOLVER.to} replace />
+  if (!datos.v) return <Navigate to="/voluntarios" replace />
 
   const { v, proyecto, congregacion, tarea } = datos
   const limites = { edadMenor: proyecto.edadMenor, edadMayor: proyecto.edadMayor }
@@ -48,11 +49,11 @@ export default function VoluntarioFicha() {
 
   async function eliminar() {
     await eliminarVoluntario(db, id)
-    navegar(VOLVER.to, { replace: true })
+    navegar(rutaListaVoluntarios(), { replace: true })
   }
 
   return (
-    <Pagina titulo={v.nombre} volver={VOLVER}>
+    <Pagina titulo={v.nombre} volver={volverLista()}>
       <div className="-mt-2 mb-4 flex flex-wrap items-center gap-2 text-sm">
         <Insignia>{congregacion?.nombre ?? (v.invitado ? 'Otra congregación' : 'Sin congregación')}</Insignia>
         <Insignia>{v.tipo}</Insignia>
