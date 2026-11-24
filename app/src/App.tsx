@@ -16,6 +16,9 @@ import Respaldo from './pages/Respaldo'
 import CargaMasiva from './pages/CargaMasiva'
 import Tareas from './pages/Tareas'
 import TareaForm from './pages/TareaForm'
+import Mensajes from './pages/Mensajes'
+import PlantillaForm from './pages/PlantillaForm'
+import EnvioGuiado from './pages/EnvioGuiado'
 
 export default function App() {
   return (
@@ -28,6 +31,7 @@ export default function App() {
         <Route path="voluntarios/:id/editar" element={<VoluntarioForm />} />
         <Route path="emergencia" element={<Emergencia />} />
         <Route path="programacion" element={<Programacion />} />
+        <Route path="programacion/enviar" element={<EnvioGuiado />} />
         <Route path="asistencia" element={<Asistencia />} />
         <Route path="mas" element={<Mas />} />
         <Route path="mas/ajustes" element={<Ajustes />} />
@@ -37,6 +41,8 @@ export default function App() {
         <Route path="mas/carga-masiva" element={<CargaMasiva />} />
         <Route path="mas/tareas" element={<Tareas />} />
         <Route path="mas/tareas/:id" element={<TareaForm />} />
+        <Route path="mas/mensajes" element={<Mensajes />} />
+        <Route path="mas/mensajes/:id" element={<PlantillaForm />} />
         <Route path="mas/:seccion" element={<EnConstruccion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

@@ -8,6 +8,7 @@ import TelefonoAcciones from '../components/TelefonoAcciones'
 import Dialogo, { claseBotonPeligro, claseBotonPrimario, claseBotonSecundario } from '../components/Dialogo'
 import SelectorDisponibilidad from '../components/SelectorDisponibilidad'
 import Edad from '../components/Edad'
+import EnviarMensaje from '../components/EnviarMensaje'
 import { formatoFecha } from '../lib/fechas'
 import { eliminarVoluntario } from '../lib/voluntarios'
 import { rutaListaVoluntarios } from '../lib/filtros'
@@ -81,6 +82,8 @@ export default function VoluntarioFicha() {
           ))
         )}
       </Tarjeta>
+
+      <EnviarMensaje voluntario={v} />
 
       <Tarjeta titulo="Contacto de emergencia">
         {v.emergenciaNombre || v.emergenciaCelular ? (

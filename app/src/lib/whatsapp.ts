@@ -30,3 +30,11 @@ export function intentWhatsappHref(numero: string, texto = ''): string {
 export function whatsappHref(numero: string, texto = '', android = esAndroid()): string {
   return android ? intentWhatsappHref(numero, texto) : waMeHref(numero, texto)
 }
+
+/** WhatsApp sin destinatario (el usuario elige el chat o grupo): para compartir un texto. */
+export function whatsappTextoHref(texto: string, android = esAndroid()): string {
+  const t = encodeURIComponent(texto)
+  const web = `https://wa.me/?text=${t}`
+  if (!android) return web
+  return `intent://send/?text=${t}#Intent;scheme=whatsapp;package=${PAQUETE_WHATSAPP};S.browser_fallback_url=${encodeURIComponent(web)};end`
+}

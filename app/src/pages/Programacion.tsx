@@ -6,6 +6,9 @@ import type { Confirmacion, Jornada, Programacion as Prog, Tarea, Voluntario } f
 import Pagina from '../components/Pagina'
 import { claseInput } from '../components/Campos'
 import TelefonoAcciones from '../components/TelefonoAcciones'
+import CompartirTexto from '../components/CompartirTexto'
+import Opciones from '../components/Opciones'
+import { textoProgramacion } from '../lib/mensajes'
 import Dialogo, { claseBotonPrimario, claseBotonSecundario } from '../components/Dialogo'
 import { IconoBuscar, IconoCerrar, IconoMasSimbolo } from '../components/Iconos'
 import { diaSemana, fechaLarga, formatoHora, hoyISO } from '../lib/fechas'
@@ -44,6 +47,8 @@ export default function Programacion() {
 
   const [agregando, setAgregando] = useState(false)
   const [copiar, setCopiar] = useState(false)
+  const [compartir, setCompartir] = useState(false)
+  const [jornadasTexto, setJornadasTexto] = useState<'ambas' | Jornada>('ambas')
 
   if (!proyecto || !datos) {
     return (
@@ -148,9 +153,45 @@ export default function Programacion() {
       <ListaProgramados lista={deJornada} tareas={tareasVista} todasTareas={datos.tareas} fecha={fecha} jornada={jornada} />
 
       {datos.progs.length > 0 && (
-        <button type="button" onClick={() => setCopiar(true)} className={`mt-4 w-full ${claseBotonSecundario}`}>
-          Copiar esta fecha a otra…
-        </button>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link to={`/programacion/enviar?f=${fecha}&j=${jornada}`} className={`text-center ${claseBotonSecundario}`}>
+            ✉ Envío guiado
+          </Link>
+          <button type="button" onClick={() => setCompartir(true)} className={claseBotonSecundario}>
+            Compartir texto
+          </button>
+          <button type="button" onClick={() => setCopiar(true)} className={`col-span-2 ${claseBotonSecundario}`}>
+            Copiar esta fecha a otra…
+          </button>
+        </div>
+      )}
+
+      {compartir && (
+        <CompartirTexto
+          titulo="Compartir programación"
+          onCerrar={() => setCompartir(false)}
+          opciones={
+            <div className="mb-3">
+              <Opciones<'ambas' | Jornada>
+                valor={jornadasTexto}
+                onCambiar={setJornadasTexto}
+                opciones={[
+                  { valor: 'ambas', texto: 'Ambas jornadas' },
+                  { valor: 'M', texto: 'Mañana' },
+                  { valor: 'T', texto: 'Tarde' },
+                ]}
+              />
+            </div>
+          }
+          texto={textoProgramacion({
+            proyecto,
+            fecha,
+            jornadas: jornadasTexto === 'ambas' ? ['M', 'T'] : [jornadasTexto],
+            programaciones: datos.progs,
+            voluntarios: new Map(datos.voluntarios.map((v) => [v.id, v])),
+            tareas: datos.tareas,
+          })}
+        />
       )}
 
       {agregando && (
