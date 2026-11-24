@@ -12,6 +12,7 @@ import CongregacionForm from './pages/CongregacionForm'
 import VoluntarioForm from './pages/VoluntarioForm'
 import VoluntarioFicha from './pages/VoluntarioFicha'
 import Emergencia from './pages/Emergencia'
+import Respaldo from './pages/Respaldo'
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="mas/ajustes" element={<Ajustes />} />
         <Route path="mas/congregaciones" element={<Congregaciones />} />
         <Route path="mas/congregaciones/:id" element={<CongregacionForm />} />
+        <Route path="mas/respaldo" element={<Respaldo />} />
         <Route path="mas/:seccion" element={<EnConstruccion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

@@ -99,3 +99,11 @@ export function aMinutos(hhmm: string | null | undefined): number | null {
   if (h > 23 || min > 59) return null
   return h * 60 + min
 }
+
+/** Fecha-hora ISO → 'dd/mm/aaaa h:mm a. m.' ('—' si no hay). */
+export function fechaHora(iso?: string | null): string {
+  if (!iso) return '—'
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return '—'
+  return `${formatoFecha(aISO(d))} ${formatoHora(horaActual(d))}`
+}

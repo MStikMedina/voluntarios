@@ -3,19 +3,13 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/db'
 import { solicitarPersistencia, type EstadoPersistencia } from '../db/persistencia'
 import { borrarDatosDePrueba, crearDatosDePrueba, NOMBRE_CONGREGACION_PRUEBA } from '../db/datosPrueba'
-import { aISO, alertaEdad, edad, formatoFecha, formatoHora, horaActual } from '../lib/fechas'
+import { alertaEdad, edad, fechaHora } from '../lib/fechas'
 import { codigosDisponibilidad } from '../lib/disponibilidad'
 
 const TEXTO_PERSISTENCIA: Record<EstadoPersistencia, string> = {
   persistente: 'Protegidos (el navegador no los borrará solo)',
   no_persistente: 'Sin protección permanente (instale la app y haga respaldos)',
   no_soportado: 'El navegador no permite protegerlos',
-}
-
-function fechaHora(iso?: string) {
-  if (!iso) return '—'
-  const d = new Date(iso)
-  return `${formatoFecha(aISO(d))} ${formatoHora(horaActual(d))}`
 }
 
 // Tarjeta en "Más": estado de los datos guardados en el dispositivo y datos de prueba.
