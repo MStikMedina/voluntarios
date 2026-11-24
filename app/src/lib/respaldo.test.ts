@@ -65,15 +65,17 @@ describe('respaldo', () => {
     await llenar(a)
     const r = await crearRespaldo(a)
 
+    // B parte de los mismos datos (mismos ids), cambia uno y agrega otro.
     const b = nuevaBase()
-    await llenar(b)
-    await b.voluntarios.update(1, { nombre: 'Cambiado' })
-    await guardarVoluntario(b, vol('Solo en B', 1)) // id 3
+    await restaurarRespaldo(b, r, 'reemplazar')
+    const jose = (await b.voluntarios.where('nombreNorm').equals('jose perez').first())!
+    await b.voluntarios.update(jose.id, { nombre: 'Cambiado' })
+    const soloB = await guardarVoluntario(b, vol('Solo en B', jose.congregacionId!))
     await restaurarRespaldo(b, r, 'combinar')
 
     expect(await b.voluntarios.count()).toBe(3)
-    expect((await b.voluntarios.get(1))?.nombre).toBe('José Pérez')
-    expect((await b.voluntarios.get(3))?.nombre).toBe('Solo en B')
+    expect((await b.voluntarios.get(jose.id))?.nombre).toBe('José Pérez')
+    expect((await b.voluntarios.get(soloB))?.nombre).toBe('Solo en B')
   })
 
   it('rechaza archivos que no son respaldos', () => {

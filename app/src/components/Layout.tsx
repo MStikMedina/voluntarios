@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { Outlet } from 'react-router-dom'
 import BarraInferior from './BarraInferior'
 import AvisoActualizacion from './AvisoActualizacion'
+import AvisoNube from './AvisoNube'
 
 export default function Layout() {
   return (
@@ -12,6 +13,7 @@ export default function Layout() {
         </Suspense>
       </main>
       <AvisoActualizacion />
+      <AvisoNube />
       <BarraInferior />
     </div>
   )

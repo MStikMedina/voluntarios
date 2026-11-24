@@ -1,7 +1,8 @@
 # Guía de uso — App «Voluntarios»
 
-App para controlar a los voluntarios de la remodelación del Salón del Reino. Funciona **sin internet** y
-guarda los datos **solo en el dispositivo** (no hay servidor). Por eso el **respaldo** es tan importante.
+App para controlar a los voluntarios de la remodelación del Salón del Reino. Funciona **sin internet**:
+guarda los datos en el dispositivo y, cuando hay conexión, los copia a la **nube** (Supabase). Así todos los
+celulares y PCs que usen la app ven los mismos datos (ver §7).
 
 Dirección: **https://mstikmedina.github.io/voluntarios/**
 
@@ -14,8 +15,7 @@ Dirección: **https://mstikmedina.github.io/voluntarios/**
 3. Ábrala desde el ícono. La primera vez aparece «La app ya funciona sin internet».
 4. Cuando haya una versión nueva aparecerá **«Nueva versión disponible · Recargar»**: tóquelo.
 
-> En el PC se usa la misma dirección. Los datos **no** se pasan solos entre equipos: se pasan con un
-> archivo de respaldo (ver §7).
+> En el PC se usa la misma dirección. Los datos se pasan solos entre equipos a través de la nube.
 
 ## 2. Configurar (una sola vez)
 
@@ -74,18 +74,33 @@ Elija el rango de fechas y descargue el **Informe completo** o cada hoja: horas 
 por tarea, por fecha y listado de voluntarios. Las **horas** se calculan con el **horario de la jornada**
 (día completo = mañana + tarde), no con la hora real de llegada y salida.
 
-## 7. Respaldo — ¡no lo olvide!
+## 7. Nube y respaldo
+
+### La nube
+- Cada cambio se guarda primero en el dispositivo y se sube a la nube en segundos. Los demás dispositivos lo
+  reciben al momento (o al abrir la app).
+- **Sin internet** se puede trabajar normal (por ejemplo, la asistencia en la obra): los cambios quedan
+  «por subir» y se suben solos al volver la señal.
+- **Más → Nube** muestra el estado, la última sincronización y cuántos cambios faltan por subir.
+- Si dos personas cambian **el mismo registro** a la vez, queda el último que se subió.
+- La **primera vez** que un dispositivo con datos se conecta a una nube que ya tiene datos distintos, la app
+  pregunta con cuáles quedarse. Lo normal es **Usar los datos de la nube**.
+- **Ojo:** «Empezar de cero» y «Restaurar → Reemplazar todo» ahora afectan a **todos** los dispositivos.
+- En Supabase queda un **historial** de cada cambio (tabla `registros_historial`), por si hay que recuperar
+  algo borrado por error.
+
+### Respaldo
 
 - **Más → Respaldo → Crear respaldo y compartir**: guarde el archivo `voluntarios-respaldo-AAAA-MM-DD.json`
   en Drive, en un chat de WhatsApp con usted mismo o en el PC.
 - Inicio muestra **«Haga un respaldo»** cuando hay cambios sin respaldar.
 - **Restaurar**: elija el archivo, revise los conteos y toque **Reemplazar todo** (deja exactamente lo del
   archivo) o **Combinar** (agrega o actualiza; conserva lo demás).
-- **Pasar al PC**: respaldo en el celular → envíe el archivo al PC → en el PC, Restaurar → Reemplazar todo.
-  Para volver, al revés. **Trabaje en un solo equipo a la vez** para no perder cambios.
-- **Empezar de cero**: borra los datos (por ejemplo, al terminar las pruebas). Pide escribir BORRAR.
+- **Empezar de cero**: borra los datos en todos los dispositivos (por ejemplo, al terminar las pruebas).
+  Pide escribir BORRAR.
 
-> Si se borran los datos del navegador o se desinstala la app **sin respaldo, los datos se pierden**.
+> Aunque los datos estén en la nube, conviene un respaldo de vez en cuando: es la copia que nadie más puede
+> tocar.
 
 ## 8. Cierre del proyecto
 

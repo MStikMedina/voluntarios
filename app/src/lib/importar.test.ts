@@ -130,7 +130,8 @@ describe('importar', () => {
     expect(r).toEqual({ voluntarios: 20, congregaciones: 1, omitidas: 1 })
     expect(await db.voluntarios.count()).toBe(20)
     const v = await db.voluntarios.where('nombreNorm').equals('voluntario 1').first()
-    expect(v?.congregacionId).toBe(2)
+    const nueva = await db.congregaciones.where('nombre').equals('Nueva').first()
+    expect(v?.congregacionId).toBe(nueva?.id)
   })
 
   it('sin crear congregaciones omite esas filas', async () => {

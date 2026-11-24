@@ -198,7 +198,8 @@ export default function Respaldo() {
       <Tarjeta titulo="Empezar de cero">
         <p className="text-sm text-slate-600 dark:text-slate-300">
           Úselo al terminar la fase de pruebas, antes de cargar los datos reales. Borra congregaciones, voluntarios,
-          tareas, cupos, programación y asistencia. <strong>Haga un respaldo antes</strong> si quiere conservar algo.
+          tareas, cupos, programación y asistencia <strong>en todos los dispositivos</strong> (también en la nube).{' '}
+          <strong>Haga un respaldo antes</strong> si quiere conservar algo.
         </p>
         <button type="button" onClick={() => setBorrar(true)} className={`w-full ${claseBotonPeligro}`}>
           Borrar los datos…
@@ -240,13 +241,13 @@ export default function Respaldo() {
       >
         {confirmar === 'reemplazar' ? (
           <p>
-            Se <strong>borrarán todos los datos de este equipo</strong> y quedarán solo los del archivo. Si tiene cambios
-            que no están en el archivo, haga primero un respaldo.
+            Se <strong>borrarán todos los datos</strong> (en este equipo, en la nube y en los demás dispositivos) y
+            quedarán solo los del archivo. Si tiene cambios que no están en el archivo, haga primero un respaldo.
           </p>
         ) : (
           <p>
             Los registros del archivo se agregan, y los que ya existen (mismo id) se reemplazan por la versión del
-            archivo. Lo que solo está en este equipo se conserva.
+            archivo. Lo que no está en el archivo se conserva. Los cambios se copian a la nube.
           </p>
         )}
       </Dialogo>
@@ -283,8 +284,8 @@ function DialogoBorrar({ onCerrar, onHecho }: { onCerrar: () => void; onHecho: (
       }
     >
       <p className="mb-3 text-sm">
-        Se borrarán definitivamente las congregaciones, voluntarios, tareas, cupos, programación y asistencia de este
-        equipo. No se puede deshacer.
+        Se borrarán definitivamente las congregaciones, voluntarios, tareas, cupos, programación y asistencia en{' '}
+        <strong>todos los dispositivos</strong> (también en la nube). No se puede deshacer.
       </p>
       <label className="mb-3 flex items-center gap-2 text-sm">
         <input type="checkbox" checked={todo} onChange={(e) => setTodo(e.target.checked)} className="h-4 w-4 accent-red-600" />

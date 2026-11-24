@@ -1,6 +1,6 @@
 // Respaldo y restauración (PLAN.md §2.13): un archivo JSON con todas las tablas.
 import type { BaseVoluntarios } from '../db/db'
-import { PLANTILLAS_INICIALES, PROYECTO_POR_DEFECTO } from '../db/db'
+import { plantillasIniciales, PROYECTO_POR_DEFECTO } from '../db/db'
 import type {
   Asistencia, Congregacion, Dia, Plantilla, Programacion, Proyecto, Tarea, Voluntario,
 } from '../db/tipos'
@@ -194,7 +194,7 @@ export async function borrarDatos(db: BaseVoluntarios, todo = false): Promise<vo
       await db[t].clear()
     }
     if (todo) {
-      await db.plantillas.bulkAdd(PLANTILLAS_INICIALES.map((p) => ({ ...p })) as never)
+      await db.plantillas.bulkAdd(plantillasIniciales())
       const actual = await db.obtenerProyecto()
       await db.proyecto.put({ ...PROYECTO_POR_DEFECTO, id: 1, ultimoRespaldo: actual.ultimoRespaldo })
     }
