@@ -1,0 +1,25 @@
+# --- Dependencias y build ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.log
+
+# --- NUNCA subir datos de voluntarios (el repo es público) ---
+# Respaldos, exportaciones, cargas masivas y formularios llenos.
+*.json
+!app/package.json
+!app/package-lock.json
+!app/tsconfig*.json
+!app/.oxlintrc.json
+*.xlsx
+*.xls
+*.csv
+*.pdf
+
+# --- Editor / sistema ---
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db

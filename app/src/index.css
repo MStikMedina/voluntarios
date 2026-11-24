@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+/* Color principal azul sobrio. El modo oscuro sigue al sistema (prefers-color-scheme). */
+@theme {
+  --color-primario-50: #eef4fb;
+  --color-primario-100: #d6e3f4;
+  --color-primario-200: #adc7e8;
+  --color-primario-300: #7aa3d6;
+  --color-primario-400: #4b7fc0;
+  --color-primario-500: #2d64a8;
+  --color-primario-600: #1e4e8c;
+  --color-primario-700: #1a4275;
+  --color-primario-800: #16375f;
+  --color-primario-900: #112a49;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  -webkit-tap-highlight-color: transparent;
+}

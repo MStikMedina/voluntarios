@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#1e4e8c"/>
+  <!-- casa / salón -->
+  <path d="M256 128 L384 224 V368 H128 V224 Z" fill="none" stroke="#ffffff" stroke-width="24" stroke-linejoin="round"/>
+  <!-- tres personas -->
+  <g fill="#ffffff">
+    <circle cx="200" cy="262" r="20"/>
+    <path d="M168 340 a32 32 0 0 1 64 0 Z"/>
+    <circle cx="256" cy="250" r="23"/>
+    <path d="M219 340 a37 37 0 0 1 74 0 Z"/>
+    <circle cx="312" cy="262" r="20"/>
+    <path d="M280 340 a32 32 0 0 1 64 0 Z"/>
+  </g>
+</svg>
