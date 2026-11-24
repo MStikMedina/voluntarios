@@ -13,6 +13,7 @@ import { ordenarCongregaciones } from '../lib/congregaciones'
 import { formatoCelular, validarCelular } from '../lib/telefono'
 import { hoyISO } from '../lib/fechas'
 import { rutaListaVoluntarios } from '../lib/filtros'
+import { coincideHabilidad, NOMBRE_ESTADO, ordenarTareas } from '../lib/tareas'
 import {
   asegurarPrincipal, duplicadosVoluntario, formAVoluntario, formVoluntarioVacio, guardarVoluntario,
   hayDuplicados, hayErrores, validarVoluntario, voluntarioAForm, type DuplicadosVoluntario, type FormVoluntario,
@@ -26,13 +27,20 @@ export default function VoluntarioForm() {
   const volver = nuevo ? { to: rutaListaVoluntarios(), texto: 'Voluntarios' } : { to: `/voluntarios/${id}`, texto: 'Ficha' }
 
   const datos = useLiveQuery(async () => {
-    const [proyecto, congregaciones, todos, actual] = await Promise.all([
+    const [proyecto, congregaciones, todos, actual, tareas] = await Promise.all([
       db.obtenerProyecto(),
       db.congregaciones.toArray(),
       db.voluntarios.toArray(),
       id ? db.voluntarios.get(id) : undefined,
+      db.tareas.toArray(),
     ])
-    return { proyecto, congregaciones: ordenarCongregaciones(congregaciones), todos, actual: actual ?? null }
+    return {
+      proyecto,
+      congregaciones: ordenarCongregaciones(congregaciones),
+      todos,
+      actual: actual ?? null,
+      tareas: ordenarTareas(tareas),
+    }
   }, [id])
 
   const [form, setForm] = useState<FormVoluntario | null>(nuevo ? formVoluntarioVacio() : null)
@@ -300,6 +308,38 @@ export default function VoluntarioForm() {
             }
             error={visibles.emergenciaCelular}
           />
+        </Tarjeta>
+
+        <Tarjeta titulo="Tarea habitual (opcional)">
+          <select
+            aria-label="Tarea habitual"
+            value={form.tareaHabitualId ?? ''}
+            onChange={(e) => cambiar('tareaHabitualId', e.target.value ? Number(e.target.value) : null)}
+            className={claseInput}
+          >
+            <option value="">— Sin tarea habitual —</option>
+            {datos.tareas
+              .filter((t) => t.estado !== 'terminada' || t.id === form.tareaHabitualId)
+              .map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.nombre}
+                  {t.estado !== 'pendiente' ? ` (${NOMBRE_ESTADO[t.estado].toLowerCase()})` : ''}
+                  {coincideHabilidad(form.profesion, t.habilidadRequerida) ? ' ★' : ''}
+                </option>
+              ))}
+          </select>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {datos.tareas.length === 0 ? (
+              <>
+                Aún no hay tareas.{' '}
+                <Link to="/mas/tareas/nueva" className="font-medium text-primario-600 dark:text-primario-300">
+                  Crear una
+                </Link>
+              </>
+            ) : (
+              'Se propone al programarlo; en cada fecha se puede cambiar. ★ = coincide con su profesión.'
+            )}
+          </p>
         </Tarjeta>
 
         <Tarjeta titulo="Días disponibles (cada semana)">

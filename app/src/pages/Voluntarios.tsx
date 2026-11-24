@@ -5,6 +5,7 @@ import { db } from '../db/db'
 import Pagina, { Vacio } from '../components/Pagina'
 import TelefonoAcciones from '../components/TelefonoAcciones'
 import Edad from '../components/Edad'
+import Opciones from '../components/Opciones'
 import { claseInput } from '../components/Campos'
 import { IconoBuscar, IconoCerrar, IconoFiltro, IconoMasSimbolo } from '../components/Iconos'
 import { celularPrincipal, NOMBRES_TURNO, ordenarVoluntarios } from '../lib/voluntarios'
@@ -195,37 +196,6 @@ function Grupo({ titulo, children }: { titulo: string; children: ReactNode }) {
     <div>
       <p className="mb-1.5 text-sm font-medium text-slate-600 dark:text-slate-300">{titulo}</p>
       {children}
-    </div>
-  )
-}
-
-/** Botones de opción única en fila (segmentados). */
-function Opciones<T extends string>({
-  valor,
-  opciones,
-  onCambiar,
-}: {
-  valor: T
-  opciones: { valor: T; texto: string }[]
-  onCambiar: (v: T) => void
-}) {
-  return (
-    <div className="flex flex-wrap gap-1.5">
-      {opciones.map((o) => (
-        <button
-          key={o.valor}
-          type="button"
-          aria-pressed={valor === o.valor}
-          onClick={() => onCambiar(o.valor)}
-          className={`rounded-lg px-3 py-2 text-sm font-medium ${
-            valor === o.valor
-              ? 'bg-primario-600 text-white'
-              : 'bg-slate-100 text-slate-700 active:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:active:bg-slate-700'
-          }`}
-        >
-          {o.texto}
-        </button>
-      ))}
     </div>
   )
 }
