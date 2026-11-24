@@ -19,6 +19,7 @@ import TareaForm from './pages/TareaForm'
 import Mensajes from './pages/Mensajes'
 import PlantillaForm from './pages/PlantillaForm'
 import EnvioGuiado from './pages/EnvioGuiado'
+import ProgramacionHoja from './pages/ProgramacionHoja'
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
         <Route path="emergencia" element={<Emergencia />} />
         <Route path="programacion" element={<Programacion />} />
         <Route path="programacion/enviar" element={<EnvioGuiado />} />
+        <Route path="programacion/hoja" element={<ProgramacionHoja />} />
         <Route path="asistencia" element={<Asistencia />} />
         <Route path="mas" element={<Mas />} />
         <Route path="mas/ajustes" element={<Ajustes />} />

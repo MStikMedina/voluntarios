@@ -160,8 +160,11 @@ export default function Programacion() {
           <button type="button" onClick={() => setCompartir(true)} className={claseBotonSecundario}>
             Compartir texto
           </button>
-          <button type="button" onClick={() => setCopiar(true)} className={`col-span-2 ${claseBotonSecundario}`}>
-            Copiar esta fecha a otra…
+          <Link to={`/programacion/hoja?f=${fecha}`} className={`text-center ${claseBotonSecundario}`}>
+            Imagen / PDF
+          </Link>
+          <button type="button" onClick={() => setCopiar(true)} className={claseBotonSecundario}>
+            Copiar a otra fecha…
           </button>
         </div>
       )}
