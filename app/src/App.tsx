@@ -6,6 +6,7 @@ import Programacion from './pages/Programacion'
 import Asistencia from './pages/Asistencia'
 import Mas from './pages/Mas'
 import EnConstruccion from './pages/EnConstruccion'
+import Ajustes from './pages/Ajustes'
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="programacion" element={<Programacion />} />
         <Route path="asistencia" element={<Asistencia />} />
         <Route path="mas" element={<Mas />} />
+        <Route path="mas/ajustes" element={<Ajustes />} />
         <Route path="mas/:seccion" element={<EnConstruccion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

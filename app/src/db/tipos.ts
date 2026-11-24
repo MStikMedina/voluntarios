@@ -13,6 +13,8 @@ export interface Horario {
 }
 export type Jornadas = Record<Jornada, Horario>
 
+export type FrecuenciaRespaldo = 'diario' | 'semanal'
+
 export interface Proyecto {
   id: 1
   nombre: string
@@ -26,7 +28,7 @@ export interface Proyecto {
   jornadas: Jornadas
   edadMenor: number
   edadMayor: number
-  frecuenciaRespaldo: 'diario'
+  frecuenciaRespaldo: FrecuenciaRespaldo
   ultimoRespaldo?: string // ISO fecha-hora
   ultimoCambio?: string // ISO fecha-hora
 }
